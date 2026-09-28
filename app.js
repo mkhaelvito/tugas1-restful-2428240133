@@ -20,6 +20,23 @@ let nextId = 4;
 const kirimError = (res, kode, pesan) =>
   res.status(kode).json({ status: "error", message: pesan, data: null });
 
+// cek string wajib: tidak boleh kosong / bukan string
+const stringKosong = (v) => typeof v !== "string" || v.trim() === "";
+// cek number wajib: harus number valid
+const angkaTidakValid = (v) => typeof v !== "number" || Number.isNaN(v);
+
+// validasi field wajib (nama, jenisHewan, umurBulan, harga); return pesan error atau null
+const validasi = (body) => {
+  const { nama, jenisHewan, ras, umurBulan, harga } = body || {};
+  if (stringKosong(nama)) return "Field nama wajib diisi";
+  if (stringKosong(jenisHewan)) return "Field jenisHewan wajib diisi";
+  if (angkaTidakValid(umurBulan)) return "Field umurBulan wajib diisi dan berupa angka";
+  if (angkaTidakValid(harga)) return "Field harga wajib diisi dan berupa angka";
+  // field opsional: ras harus string jika dikirim
+  if (ras !== undefined && ras !== null && typeof ras !== "string") return "Field ras harus berupa string";
+  return null;
+};
+
 // ==================== ROUTES ====================
 
 // GET /
@@ -62,6 +79,25 @@ app.get("/pets/:id", (req, res) => {
   const pet = pets.find((p) => p.id === id);
   if (!pet) return kirimError(res, 404, `Data dengan id ${req.params.id} tidak ditemukan`);
   res.status(200).json(pet);
+});
+
+// POST /pets
+// Body: { "nama": "Mochi", "jenisHewan": "kucing", "ras": "Persia", "umurBulan": 4, "harga": 2500000 }
+app.post("/pets", (req, res) => {
+  // validasi field wajib -> 400
+  const pesan = validasi(req.body);
+  if (pesan) return kirimError(res, 400, pesan);
+
+  const { nama, jenisHewan, ras, umurBulan, harga } = req.body;
+  const baru = { id: nextId++, nama, jenisHewan, ras, umurBulan, harga };
+  pets.push(baru);
+
+  // berhasil -> 201 + data yang baru dibuat
+  res.status(201).json({
+    status: "success",
+    message: "Data hewan peliharaan berhasil ditambahkan",
+    data: baru,
+  });
 });
 
 // ==================== SERVER ====================
