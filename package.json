@@ -1,0 +1,17 @@
+{
+  "name": "tugas1-restful-2428240133",
+  "version": "1.0.0",
+  "description": "Tugas 1 - RESTful API murni dengan Express.js (Topik 21: Pet Shop - Hewan Peliharaan)",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
