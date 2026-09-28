@@ -15,6 +15,11 @@ let pets = [
 // id berikutnya (otomatis bertambah)
 let nextId = 4;
 
+// ==================== HELPER ====================
+// response error standar { status, message, data }
+const kirimError = (res, kode, pesan) =>
+  res.status(kode).json({ status: "error", message: pesan, data: null });
+
 // ==================== ROUTES ====================
 
 // GET /
@@ -34,6 +39,29 @@ app.get("/", (req, res) => {
       "DELETE /pets/:id",
     ],
   });
+});
+
+// GET /pets
+// GET /pets?jenisHewan=kucing  (filter dengan query string)
+app.get("/pets", (req, res) => {
+  const { jenisHewan } = req.query;
+  // jika ada filter, kembalikan array hasil filter (boleh kosong [])
+  if (jenisHewan) {
+    const hasil = pets.filter(
+      (p) => p.jenisHewan.toLowerCase() === String(jenisHewan).toLowerCase()
+    );
+    return res.status(200).json(hasil);
+  }
+  // tanpa filter, kembalikan semua data
+  res.status(200).json(pets);
+});
+
+// GET /pets/1
+app.get("/pets/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const pet = pets.find((p) => p.id === id);
+  if (!pet) return kirimError(res, 404, `Data dengan id ${req.params.id} tidak ditemukan`);
+  res.status(200).json(pet);
 });
 
 // ==================== SERVER ====================
