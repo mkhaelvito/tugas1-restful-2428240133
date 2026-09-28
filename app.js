@@ -153,6 +153,9 @@ app.use((err, req, res, next) => {
   kirimError(res, 500, "Terjadi kesalahan pada server");
 });
 
-// ==================== SERVER ====================
+// ==================== SERVER (siap Vercel) ====================
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server berjalan di http://localhost:${PORT}`));
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => console.log(`Server berjalan di http://localhost:${PORT}`));
+}
+module.exports = app;
