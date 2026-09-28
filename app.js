@@ -123,6 +123,36 @@ app.put("/pets/:id", (req, res) => {
   });
 });
 
+// DELETE /pets/1
+app.delete("/pets/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = pets.findIndex((p) => p.id === id);
+  // data tidak ada -> 404
+  if (index === -1) return kirimError(res, 404, `Data dengan id ${req.params.id} tidak ditemukan`);
+
+  pets.splice(index, 1);
+  res.status(200).json({
+    status: "success",
+    message: `Data hewan peliharaan dengan id ${id} berhasil dihapus`,
+    data: null,
+  });
+});
+
+// ==================== MIDDLEWARE AKHIR ====================
+
+// catch-all 404: route yang tidak terdaftar
+app.use((req, res) => {
+  kirimError(res, 404, "Endpoint tidak ditemukan");
+});
+
+// error handler (mis. JSON body rusak) tetap dibalas JSON
+app.use((err, req, res, next) => {
+  if (err.type === "entity.parse.failed") {
+    return kirimError(res, 400, "Body request bukan JSON yang valid");
+  }
+  kirimError(res, 500, "Terjadi kesalahan pada server");
+});
+
 // ==================== SERVER ====================
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server berjalan di http://localhost:${PORT}`));
