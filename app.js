@@ -100,6 +100,29 @@ app.post("/pets", (req, res) => {
   });
 });
 
+// PUT /pets/1
+// Body: { "nama": "Mochi", "jenisHewan": "kucing", "ras": "Persia", "umurBulan": 5, "harga": 2700000 }
+app.put("/pets/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = pets.findIndex((p) => p.id === id);
+  // data tidak ada -> 404
+  if (index === -1) return kirimError(res, 404, `Data dengan id ${req.params.id} tidak ditemukan`);
+
+  // field wajib kosong -> 400
+  const pesan = validasi(req.body);
+  if (pesan) return kirimError(res, 400, pesan);
+
+  // penggantian penuh (id tetap)
+  const { nama, jenisHewan, ras, umurBulan, harga } = req.body;
+  pets[index] = { id, nama, jenisHewan, ras, umurBulan, harga };
+
+  res.status(200).json({
+    status: "success",
+    message: "Data hewan peliharaan berhasil diubah",
+    data: pets[index],
+  });
+});
+
 // ==================== SERVER ====================
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server berjalan di http://localhost:${PORT}`));
