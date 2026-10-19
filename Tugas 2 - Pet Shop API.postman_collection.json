@@ -1,0 +1,260 @@
+{
+  "info": {
+    "_postman_id": "5132bf16-a0fd-4348-9f01-d8f99568e714",
+    "name": "Tugas 2 - Pet Shop API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58421761",
+    "_collection_link": "https://go.postman.co/collection/58421761-5132bf16-a0fd-4348-9f01-d8f99568e714?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get All Pet",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/pets",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "pets"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Pet by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/pets/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "pets",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Filter Pet by Jenis",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/pets?jenisHewan=kucing",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "pets"
+          ],
+          "query": [
+            {
+              "key": "jenisHewan",
+              "value": "kucing"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Pet",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{api_key}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nama\": \"Mochi Automation\",\r\n  \"jenisHewan\": \"kucing\",\r\n  \"ras\": \"Persia\",\r\n  \"umurBulan\": 4,\r\n  \"harga\": 2500000\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/pets",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "pets"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Pet",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{api_key}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nama\": \"Mochi Automation Updated\",\r\n  \"jenisHewan\": \"kucing\",\r\n  \"ras\": \"Persia\",\r\n  \"umurBulan\": 5,\r\n  \"harga\": 2700000\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/pets/{{petId}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "pets",
+            "{{petId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Pet",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "{{api_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/pets/{{petId}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "pets",
+            "{{petId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Pet Without API Key",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/pets",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "pets"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Pet With Invalid Body",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{api_key}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nama\": \"Mochi Automation\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/pets",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "pets"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Pet With Invalid ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/pets/999",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "pets",
+            "999"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "exec": [
+          "pm.test(\"Status code harus 200\", function () {\r",
+          "    pm.response.to.have.status(200);\r",
+          "});\r",
+          "\r",
+          "pm.test(\"Respons berisi satu hewan\", function () {\r",
+          "    const json = pm.response.json();\r",
+          "\r",
+          "    pm.expect(json.data).to.be.an(\"object\");\r",
+          "    pm.expect(json.data.id).to.eql(1);\r",
+          "    pm.expect(json.data).to.have.property(\"nama\");\r",
+          "    pm.expect(json.data).to.have.property(\"jenisHewan\");\r",
+          "});"
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ]
+}
